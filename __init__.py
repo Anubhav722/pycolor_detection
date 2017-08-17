@@ -3,6 +3,7 @@ import preprocessing
 import os
 import sys
 import cv2
+import csv
 
 if __name__ == '__main__':
 	try :
@@ -17,19 +18,29 @@ if __name__ == '__main__':
 			print ("path not found!!!")
 
 	if images:
-		for image in images:
-			try:
-				img  = cv2.imread(sys.argv[1]+image)
-			except:
-				img = cv2.imread(sys.argv[1] + "/" + image)
-			ip_converted = preprocessing.resizing(img)
-			segmented_image = preprocessing.image_segmentation(ip_converted)
-			processed_image = preprocessing.removebg(segmented_image)
+		try :
+			output_csv = sys.argv[3]
+		except :
+			output_csv = "result.csv"
+		with open(output_csv,'wb+') as result:
+			writer = csv.writer(result,delimiter=',')
+			writer.writerow(['Image','Predictions'])
+			for image in images:
+				try:
+					img  = cv2.imread(sys.argv[1]+image)
+				except:
+					img = cv2.imread(sys.argv[1] + "/" + image)
+				ip_converted = preprocessing.resizing(img)
+				segmented_image = preprocessing.image_segmentation(ip_converted)
+				processed_image = preprocessing.removebg(segmented_image)
+				try :
+					detect = pycolor.detect_color(processed_image,sys.argv[2])
+				except:
+					detect = pycolor.detect_color(processed_image,"color_hex_mapping.csv")
+				# print image,detect
+				writer.writerow([image,str(detect)])
 
-			detect = pycolor.dcolor(processed_image,sys.argv[2])
-			# map_data = color_detect.data()
-
-			print (image+":"+str(detect))
+			
 
 
 
