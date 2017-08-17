@@ -37,7 +37,7 @@ if __name__ == '__main__':
 					detect = pycolor.detect_color(processed_image,sys.argv[2])
 				except:
 					detect = pycolor.detect_color(processed_image,"color_hex_mapping.csv")
-				# print image,detect
+				# print (image,detect)
 				writer.writerow([image,str(detect)])
 
 			
