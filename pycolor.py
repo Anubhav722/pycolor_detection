@@ -132,10 +132,10 @@ def dcolor(img_byte_array,map_path):
 	img_reshaped = img_rgb.reshape((img_rgb.shape[0] * img_rgb.shape[1], 3))
 	img_final = ma.masked_where(img_reshaped == [0, 0, 0], img_reshaped)
 	
-	for clusters in xrange(3, 14):
+	for clusters in xrange(3, 17):
 		
 		# Cluster colours
-		clt = MiniBatchKMeans(n_clusters = clusters)
+		clt = MiniBatchKMeans(n_clusters = clusters,random_state=1)
 		clt.fit(img_final)
 	 
 		# Validate clustering result
@@ -147,7 +147,7 @@ def dcolor(img_byte_array,map_path):
 	# bestClusters = cluster_errors.index(min(cluster_errors)+1)
 
 	for index in xrange(5):
-		clt = MiniBatchKMeans(n_clusters=bestClusters)
+		clt = MiniBatchKMeans(n_clusters=bestClusters,random_state=1)
 		clt.fit(img_final)
 		hist = centroid_histogram(clt)
 		for (percent, color) in zip(hist, clt.cluster_centers_):

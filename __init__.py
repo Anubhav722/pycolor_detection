@@ -3,6 +3,7 @@ import preprocessing
 import os
 import sys
 import cv2
+import csv
 
 if __name__ == '__main__':
 	try :
@@ -27,9 +28,11 @@ if __name__ == '__main__':
 			processed_image = preprocessing.removebg(segmented_image)
 
 			detect = pycolor.dcolor(processed_image,sys.argv[2])
+			print image,detect
 			# map_data = color_detect.data()
-
-			print (image+":"+str(detect))
+			with open("/home/gifty/Desktop/result.csv",'a+') as result:
+				writer = csv.writer(result,delimiter=',')
+				writer.writerow([image,str(detect)])
 
 
 
