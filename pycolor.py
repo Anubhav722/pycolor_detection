@@ -115,7 +115,7 @@ def closest_colour(requested_colour,dfs):
 
 
 
-def dcolor(img_byte_array,map_path):
+def detect_color(img_byte_array,map_path):
 	color_csv=[]
 	hexcod_csv=[]
 	actualhexcod_csv=[]
