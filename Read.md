@@ -1,9 +1,9 @@
-### pycolor_detection v0.1.0
+# pycolor_detection v0.1.0
 Detect most dominant color from images with monotonous backgrounds using Image processing and clustering techniques.
 
-### Documentation:
+## Documentation:
 
-## Prerequisites
+### Prerequisites
 
 What things you need to install the software and how to install them
 
@@ -19,15 +19,15 @@ What things you need to install the software and how to install them
 8. Colormap : Refer https://pypi.python.org/pypi/colormap for installation.
 ```
 
-# Usage:
+### Usage:
 
 For using it we require color-hex-mapping csv file so you can get custom results. Either you can provide the path of the csv or default csv will be used for processing.
                 ```
-                python __init__.py "Image path/Image folder path" "color-hex-mapping csv file path"
+                python __init__.py "Image path/Image folder path" "color-hex-mapping csv file path" "output.csv"
                 ```
 
 
-## Getting Started
+### Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
@@ -37,29 +37,6 @@ These instructions will get you a copy of the project up and running on your loc
 Give examples
 ```
 
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-###
 
 ## Authors
 
