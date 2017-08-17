@@ -1,4 +1,7 @@
 # pycolor_detection v0.1.0
 Detect most dominant color from images with monotonous backgrounds.
 
+# Documentation:
+
+
 
