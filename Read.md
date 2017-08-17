@@ -21,20 +21,10 @@ What things you need to install the software and how to install them
 
 ### Usage:
 
-For using it we require color-hex-mapping csv file so you can get custom results. Either you can provide the path of the csv or default csv will be used for processing.
-                ```
-                python __init__.py "Image path/Image folder path" "color-hex-mapping csv file path" "output.csv"
-                ```
-
-
-### Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-
+For using it we require **Image path/Image folder path**, **color-hex-mapping csv file** and **output csv file** so you can get custom results. Either you can provide the path of the csv or default csv will be used for processing of **color-hex-mapping csv file** and **output csv file**.
 
 ```
-Give examples
+python __init__.py "Image path/Image folder path" "color-hex-mapping csv file path" "output.csv"
 ```
 
 
