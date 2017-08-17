@@ -16,7 +16,7 @@ Detect most dominant color from images with monotonous backgrounds using Image p
 
 # Usage:
 
-For using it we require color-hex-mapping csv file so you can get custom results. Either you can provide the path of the csv or default csv will be used for processing.
+For using it we require color-hex-mapping csv file so you can get custom results. Either you can provide the path of the csv or default csv will be used for processing.\n
                 python __init__.py "Image path/Image folder path" "color-hex-mapping csv file path"
 
 
