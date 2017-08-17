@@ -30,7 +30,7 @@ if __name__ == '__main__':
 			detect = pycolor.dcolor(processed_image,sys.argv[2])
 			print image,detect
 			# map_data = color_detect.data()
-			with open("/home/gifty/Desktop/result.csv",'a+') as result:
+			with open(sys.argv[3],'a+') as result:
 				writer = csv.writer(result,delimiter=',')
 				writer.writerow([image,str(detect)])
 
