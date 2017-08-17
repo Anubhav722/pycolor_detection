@@ -32,7 +32,6 @@ python __init__.py "Image path/Image folder path" "color-hex-mapping csv file pa
 
 * **Parth Sharma** - *Initial work* - [parth1993](https://github.com/parth1993)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
