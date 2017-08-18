@@ -66,7 +66,7 @@ def match_colour(ccolor):
 
 def data(map_csv_path):
 	dfs = pd.read_csv(map_csv_path)
-	dfs['hex_to_rgb'] = dfs['Hex-Code'].apply(match_colour)
+	dfs['hex_to_rgb'] = dfs['HEX Code'].apply(match_colour)
 
 	return dfs
 
@@ -104,12 +104,12 @@ def closest_colour(requested_colour,dfs):
 	
 	requested_color = rgbtolab(requested_color)
 	# K-Nearest Neighbours implementation using Euclidean distance
-	for key,name,ccolor in zip(dfs['hex_to_rgb'],dfs['Color-category'],dfs['Hex-Code']):
+	for key,color_shade,code,color_base in zip(dfs['hex_to_rgb'],dfs['Color Name'],dfs['HEX Code'],dfs['Base Color']):
 		r_c ,g_c,b_c = map(float,key)
 		rd = (r_c - float(requested_color[0])) ** 2
 		gd = (g_c - float(requested_color[1])) ** 2
 		bd = (b_c - float(requested_color[2])) ** 2
-		min_colours[sqrt(rd + gd + bd)] = [name,ccolor]
+		min_colours[sqrt(rd + gd + bd)] = [color_shade,code,color_base]
 	return min_colours[min(min_colours.keys())]
 
 
@@ -119,23 +119,27 @@ def detect_color(img_byte_array,map_path):
 	color_csv=[]
 	hexcod_csv=[]
 	actualhexcod_csv=[]
-	closest_namecsv=dict()
+	closest_nameshade=dict()
+	closest_namebase = dict()
 	percentcsv=[]
-	totalcsv=0.0
+	totalcsv_shade=0.0
+	totalcsv_base=0.0
 	cluster_errors = []
 	domcol=[]
+	base = []
 	dom_array = []
 	dfs = data(map_path)
 	final_colorcsv = defaultdict(list)
+	final_colorbase = defaultdict(list)
 	img = cv2.imdecode(np.squeeze(np.asarray(img_byte_array[1])),-1)
 	img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 	img_reshaped = img_rgb.reshape((img_rgb.shape[0] * img_rgb.shape[1], 3))
 	img_final = ma.masked_where(img_reshaped == [0, 0, 0], img_reshaped)
 	
-	for clusters in xrange(3, 17):
+	for clusters in xrange(3, 21):
 		
 		# Cluster colours
-		clt = MiniBatchKMeans(n_clusters = clusters,random_state=1)
+		clt = MiniBatchKMeans(n_clusters = clusters,random_state=2)
 		clt.fit(img_final)
 	 
 		# Validate clustering result
@@ -146,8 +150,8 @@ def detect_color(img_byte_array,map_path):
 	# Find the best one
 	# bestClusters = cluster_errors.index(min(cluster_errors)+1)
 
-	for index in xrange(5):
-		clt = MiniBatchKMeans(n_clusters=bestClusters,random_state=1)
+	for index in xrange(2):
+		clt = MiniBatchKMeans(n_clusters=bestClusters,random_state=2)
 		clt.fit(img_final)
 		hist = centroid_histogram(clt)
 		for (percent, color) in zip(hist, clt.cluster_centers_):
@@ -157,30 +161,53 @@ def detect_color(img_byte_array,map_path):
 				hexcod = rgb2hex(int(requested_colour[0]),int(requested_colour[1]),int(requested_colour[2]))
 				actualhexcod_csv.append(hexcod)
 				output = closest_colour(hexcod,dfs)
-				closest_name,hexcoda = output[0],output[1]
+				color_shade,hexcoda,color_base = output[0],output[1],output[2]
 				color_csv.append(requested_colour)
-				if closest_name not in closest_namecsv.keys():
-					closest_namecsv[closest_name] = 1
+				# print color_shade
+				if color_shade not in closest_nameshade.keys():
+					closest_nameshade[color_shade] = 1
+					closest_namebase[color_shade] = [color_base]
 				else:
-					closest_namecsv[closest_name] += 1
+					closest_nameshade[color_shade] += 1
+				
 				hexcod_csv.append(hexcoda)
 				percentcsv.append(round(percent,2)*100)
-				totalcsv+=float(round(percent,2)*100) 
+				# totalcsv_shade+=float(round(percent,2)*100) 
 
-	out = sum(closest_namecsv.values())
-	for key in closest_namecsv.keys():
-		final_colorcsv[(float(closest_namecsv[key])/out)*100] += [key]
-		
-	test = final_colorcsv[max(final_colorcsv.keys())]
-	domcol += [test]
+	out = sum(closest_nameshade.values())
+	for key in closest_nameshade.keys():
+		final_colorcsv[(float(closest_nameshade[key])/out)*100] += [key]
+	final_shade = list()
+	shade = final_colorcsv[max(final_colorcsv.keys())]
+	# print shade
+	for s in shade:
+		if closest_namebase[s][0] not in base:
+			base += closest_namebase[s]
+			final_shade.append(s)
+	
+	
 
-	for color in domcol:
+	
+	# del final_colorcsv[max(final_colorcsv.keys())]
+	# shade = final_colorcsv[max(final_colorcsv.keys())]
+	
+	# for s in shade:
+	# 	# print '2',closest_namebase[s]
+	# 	if closest_namebase[s][0] not in base:
+	# 		base += closest_namebase[s]
+	# 		final_shade.append(s)
+	
+	# print base,final_shade
+	for S,B in zip(final_shade,base) :
 		dom_array.append(
 			{
-				'prediction': color,
-				'probability': 1
+				'prediction': 
+				{
+					'Shade': S,
+					'Base': B
+				},
 			}
 		)
-	
+
 	return dom_array
 

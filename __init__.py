@@ -30,15 +30,39 @@ if __name__ == '__main__':
 					img  = cv2.imread(sys.argv[1]+image)
 				except:
 					img = cv2.imread(sys.argv[1] + "/" + image)
+				print image
 				ip_converted = preprocessing.resizing(img)
 				segmented_image = preprocessing.image_segmentation(ip_converted)
 				processed_image = preprocessing.removebg(segmented_image)
 				try :
 					detect = pycolor.detect_color(processed_image,sys.argv[2])
 				except:
-					detect = pycolor.detect_color(processed_image,"color_hex_mapping.csv")
-				# print (image,detect)
+					detect = pycolor.detect_color(processed_image,"Colors.csv")
+				print (image,detect)
 				writer.writerow([image,str(detect)])
+	else :
+		try :
+			output_csv = sys.argv[3]
+		except :
+			output_csv = "result.csv"
+		with open(output_csv,'wb+') as result:
+			writer = csv.writer(result,delimiter=',')
+			writer.writerow(['Image','Predictions'])
+			
+			try:
+				img  = cv2.imread(sys.argv[1]+image)
+			except:
+				img = cv2.imread(sys.argv[1] + "/" + image)
+			print image
+			ip_converted = preprocessing.resizing(img)
+			segmented_image = preprocessing.image_segmentation(ip_converted)
+			processed_image = preprocessing.removebg(segmented_image)
+			try :
+				detect = pycolor.detect_color(processed_image,sys.argv[2])
+			except:
+				detect = pycolor.detect_color(processed_image,"colors.csv")
+			print (image,detect)
+			writer.writerow([image,str(detect)])
 
 			
 
