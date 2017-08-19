@@ -6,6 +6,7 @@ import cv2
 import csv
 
 if __name__ == '__main__':
+	images = list()
 	try :
 		images = os.listdir(sys.argv[1])
 
@@ -17,7 +18,7 @@ if __name__ == '__main__':
 		except:
 			print ("path not found!!!")
 
-	if images:
+	if images != []:
 		try :
 			output_csv = sys.argv[3]
 		except :
@@ -37,7 +38,7 @@ if __name__ == '__main__':
 				try :
 					detect = pycolor.detect_color(processed_image,sys.argv[2])
 				except:
-					detect = pycolor.detect_color(processed_image,"Colors.csv")
+					detect = pycolor.detect_color(processed_image,"colors.csv")
 				print (image,detect)
 				writer.writerow([image,str(detect)])
 	else :
@@ -50,10 +51,10 @@ if __name__ == '__main__':
 			writer.writerow(['Image','Predictions'])
 			
 			try:
-				img  = cv2.imread(sys.argv[1]+image)
+				img  = cv2.imread(sys.argv[1])
 			except:
-				img = cv2.imread(sys.argv[1] + "/" + image)
-			print image
+				img = cv2.imread(sys.argv[1])
+			
 			ip_converted = preprocessing.resizing(img)
 			segmented_image = preprocessing.image_segmentation(ip_converted)
 			processed_image = preprocessing.removebg(segmented_image)
@@ -61,7 +62,7 @@ if __name__ == '__main__':
 				detect = pycolor.detect_color(processed_image,sys.argv[2])
 			except:
 				detect = pycolor.detect_color(processed_image,"colors.csv")
-			print (image,detect)
+			# print (detect)
 			writer.writerow([image,str(detect)])
 
 			
