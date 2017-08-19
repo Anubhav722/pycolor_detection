@@ -62,7 +62,7 @@ if __name__ == '__main__':
 				detect = pycolor.detect_color(processed_image,sys.argv[2])
 			except:
 				detect = pycolor.detect_color(processed_image,"colors.csv")
-			print (detect)
+			# print (detect)
 			writer.writerow([image,str(detect)])
 
 			

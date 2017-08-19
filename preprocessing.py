@@ -72,7 +72,7 @@ def findSignificantContours (img, sobel_8u,sobel):
 def image_segmentation(ip_convert):
 	img = cv2.imdecode(np.squeeze(np.asarray(ip_convert[1])),1)
 	height, width, channels = img.shape
-	print height,width
+	# print height,width
 	mask = np.zeros(img.shape[:2],np.uint8)
 	bgdModel = np.zeros((1,65),np.float64)
 	fgdModel = np.zeros((1,65),np.float64)
