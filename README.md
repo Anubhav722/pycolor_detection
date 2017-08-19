@@ -5,18 +5,10 @@ Detect most dominant color from images with monotonous backgrounds using Image p
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
+Refer requirements.txt and for OpenCV python refer:
 ```
-1. Python 2.7/3.x
-2. OpenCV python : You can refer http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/ to install OpenCV 
+OpenCV python : http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/ to install OpenCV 
                    on ubuntu.
-3. Scikit-Learn : pip install scikit-learn
-4. Pandas : pip install pandas
-5. Numpy : pip install numpy
-6. CSV : pip install csv
-7. Matplotlib : pip install matplotlib
-8. Colormap : Refer https://pypi.python.org/pypi/colormap for installation.
 ```
 
 ### Usage:
