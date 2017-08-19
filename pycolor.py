@@ -136,7 +136,7 @@ def detect_color(img_byte_array,map_path):
 	img_reshaped = img_rgb.reshape((img_rgb.shape[0] * img_rgb.shape[1], 3))
 	img_final = ma.masked_where(img_reshaped == [0, 0, 0], img_reshaped)
 	
-	for clusters in xrange(3, 21):
+	for clusters in xrange(3, 17):
 		
 		# Cluster colours
 		clt = MiniBatchKMeans(n_clusters = clusters,random_state=2)
@@ -151,7 +151,7 @@ def detect_color(img_byte_array,map_path):
 	# bestClusters = cluster_errors.index(min(cluster_errors)+1)
 
 	for index in xrange(2):
-		clt = MiniBatchKMeans(n_clusters=bestClusters,random_state=2)
+		clt = MiniBatchKMeans(n_clusters=bestClusters,random_state=2,max_iter=200)
 		clt.fit(img_final)
 		hist = centroid_histogram(clt)
 		for (percent, color) in zip(hist, clt.cluster_centers_):
@@ -172,14 +172,14 @@ def detect_color(img_byte_array,map_path):
 				
 				hexcod_csv.append(hexcoda)
 				percentcsv.append(round(percent,2)*100)
-				# totalcsv_shade+=float(round(percent,2)*100) 
+					# totalcsv_shade+=float(round(percent,2)*100) 
 
 	out = sum(closest_nameshade.values())
 	for key in closest_nameshade.keys():
 		final_colorcsv[(float(closest_nameshade[key])/out)*100] += [key]
 	final_shade = list()
 	shade = final_colorcsv[max(final_colorcsv.keys())]
-	# print shade
+	
 	for s in shade:
 		if closest_namebase[s][0] not in base:
 			base += closest_namebase[s]
@@ -210,4 +210,4 @@ def detect_color(img_byte_array,map_path):
 		)
 
 	return dom_array
-
+	

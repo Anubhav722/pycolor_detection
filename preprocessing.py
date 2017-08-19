@@ -9,6 +9,7 @@ import sys
 from math import sqrt
 import random
 from collections import defaultdict
+from skin_color_remove import skin_remove
 
 
 
@@ -70,21 +71,34 @@ def findSignificantContours (img, sobel_8u,sobel):
 
 def image_segmentation(ip_convert):
 	img = cv2.imdecode(np.squeeze(np.asarray(ip_convert[1])),1)
-	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	blurred = cv2.GaussianBlur(gray, (3,3), 0) 
-	sobel = Sobel(blurred)
-	mean = np.mean(sobel);
-	# Zero any value that is less than mean.
-	# This reduces a lot of noise. 
-	sobel[sobel <= mean] = 0;
-	sobel[sobel > 255] = 255;
-	kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7,7))
-	sobel = cv2.morphologyEx(sobel, cv2.MORPH_CLOSE, kernel,iterations = 2)
-	sobel_8u = np.asarray(sobel, np.uint8)
-	significant = findSignificantContours(img, sobel_8u.copy(),sobel)
-	segmented_img = cv2.imencode('.png', significant)
+	height, width, channels = img.shape
+	print height,width
+	mask = np.zeros(img.shape[:2],np.uint8)
+	bgdModel = np.zeros((1,65),np.float64)
+	fgdModel = np.zeros((1,65),np.float64)
+	rect = (10,10,width-10,height-10)
+	cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+	mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+	img_mask = img*mask2[:,:,np.newaxis]
 
-	return segmented_img
+	img_mask = skin_remove(img_mask)
+	# gray = cv2.cvtColor(img_mask, cv2.COLOR_BGR2GRAY)
+	# blurred = cv2.GaussianBlur(gray, (3,3), 0) 
+	
+	# sobel = Sobel(blurred)
+	# mean = np.mean(sobel);
+	# # Zero any value that is less than mean.
+	# # This reduces a lot of noise. 
+	# sobel[sobel <= mean] = 0;
+	# sobel[sobel > 255] = 255;
+	# # kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7,7))
+	# # sobel = cv2.morphologyEx(sobel, cv2.MORPH_CLOSE, kernel,iterations = 1)
+	# sobel_8u = np.asarray(sobel, np.uint8)
+	# significant = findSignificantContours(img_mask, sobel_8u.copy(),sobel)
+	img_out = cv2.imencode('.png', img_mask)
+	# cv2.imshow('final',img_mask)
+	# cv2.waitKey(0)
+	return img_out
 
 def removebg(segmented_img):
 	
