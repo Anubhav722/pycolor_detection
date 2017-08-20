@@ -5,11 +5,9 @@ Detect most dominant color from images with monotonous backgrounds using Image p
 
 ### Prerequisites
 
-Refer requirements.txt and for OpenCV python refer:
-```
-OpenCV python : http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/ to install OpenCV 
-                   on ubuntu.
-```
+Refer `requirements.txt` and for OpenCV python refer:
+[OpenCV python](http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/)
+
 
 ### Usage:
 
