@@ -7,15 +7,15 @@ import csv
 
 if __name__ == '__main__':
     images = list()
-    try :
+    try:
         images = os.listdir(sys.argv[1])
 
-    except Exception as e:
+    except OSError:
         print ("path not a directory path...")
         print ("Loading image path...")
         try :
             image = cv2.imread(sys.argv[1])
-        except:
+        except IndexError:
             print ("path not found!!!")
 
     if images != []:
@@ -44,23 +44,20 @@ if __name__ == '__main__':
     else :
         try :
             output_csv = sys.argv[3]
-        except :
+        except IndexError:
             output_csv = "result.csv"
         with open(output_csv,'wb+') as result:
             writer = csv.writer(result,delimiter=',')
             writer.writerow(['Image','Predictions'])
             
-            try:
-                img  = cv2.imread(sys.argv[1])
-            except:
-                img = cv2.imread(sys.argv[1])
-            
+            img  = cv2.imread(sys.argv[1])
+
             ip_converted = preprocessing.resizing(img)
             segmented_image = preprocessing.image_segmentation(ip_converted)
             processed_image = preprocessing.removebg(segmented_image)
             try :
                 detect = pycolor.detect_color(processed_image,sys.argv[2])
-            except:
+            except IndexError:
                 detect = pycolor.detect_color(processed_image,"colors.csv")
             print (detect)
             writer.writerow([image,str(detect)])

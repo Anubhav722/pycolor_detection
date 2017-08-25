@@ -11,10 +11,6 @@ import random
 from collections import defaultdict
 from skin_color_remove import skin_remove
 
-
-
-
-
 def resizing(img):
     height, width, channels = img.shape
     if max(height,width) > 500:
@@ -26,7 +22,9 @@ def resizing(img):
         ip_convert = cv2.imencode('.png',img)
 
     return ip_convert
-def Sobel (channel):
+
+
+def Sobel(channel):
     sobelx = cv2.Sobel(channel, cv2.CV_16S, 1, 0, ksize =3)
     sobely = cv2.Sobel(channel, cv2.CV_16S, 0, 1, ksize =3)
     sobel = np.hypot(sobelx, sobely)
@@ -101,7 +99,6 @@ def image_segmentation(ip_convert):
     return img_out
 
 def removebg(segmented_img):
-    
     src = cv2.imdecode(np.squeeze(np.asarray(segmented_img[1])), 1)
     tmp = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
     _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
